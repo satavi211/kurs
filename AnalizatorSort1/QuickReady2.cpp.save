@@ -1,0 +1,107 @@
+#include <txlib.h>
+#include <stdlib.h>
+
+void QuickSort(int *numbers, int left, int right, int *counterCompare, int  *counterExchange);
+int Selection (int data[], int size, int *counterCompare, int *counterExchange );
+void DrawGraphick(int x, int y, int dx, COLORREF color);
+void QuicknReady2();
+
+int main  ()
+{
+txCreateWindow (1000, 600);
+SelectionReady();
+return 0;
+}
+
+void QuicknReady2()
+{
+    const int size = 1000;
+    int data[size] = {};
+
+    for ( int number = 1; number < size; number+=10)
+    {
+        int counterCompare = 0, counterExchange = 0;
+        for ( int i = 0; i < number; i++)
+        {
+            data[i] = rand() * 100 + i;
+            //printf ("%d\n", data[i]);
+        }
+        //printf ("\n", "      ");
+        Selection (data, number, &counterCompare, &counterExchange);
+        //printf ("%d\n", counterCompare);
+        //printf ("%d\n", counterExchange);
+        COLORREF color = RGB(255, 0, 0);
+        DrawGraphick(number, counterCompare, 255, color);
+        color = RGB(255, 0, 0);
+        DrawGraphick(number, counterExchange, 605, color);
+    }
+}
+int main()
+{
+  const  int size = 10;
+  int data[size] = {};
+
+
+  for (int i = 0; i < size; i++)
+    data[i] = rand() * 100 +i;
+
+  //for (int i = 0; i<size; i++)
+    //printf("%4d\n ", data[i]);
+  //printf("\n");
+  int counterCompare = 0;
+  int counterExchange = 0;
+  QuickSort(data, 0, size-1, &counterCompare, &counterExchange);
+
+  //for (int i = 0; i < size; i++)
+    //printf("%4d\n ", data[i]);
+    printf("%4d\n ", counterCompare);
+    printf("%4d\n ", counterExchange);
+  return 0;
+}
+
+
+void QuickSort(int *numbers, int left, int right, int *counterCompare, int  *counterExchange)
+{
+    int pivot;
+    int lHold = left;
+    int rHhold = right;
+    pivot = numbers[left];
+    while (left < right)
+    {
+        while ((numbers[right] >= pivot) && (left < right))    right--;
+        if (left != right)
+        {
+            numbers[left] = numbers[right];
+            left++;
+            (*counterExchange) +=1;
+
+        }
+        while ((numbers[left] <= pivot) && (left < right))    left++;
+        if (left != right)
+            {
+            numbers[right] = numbers[left];
+            right--;
+            (*counterExchange) +=1;
+
+
+        }
+    }
+    numbers[left] = pivot;
+    pivot = left;
+    left = lHold;
+    right = rHhold;
+    if (left < pivot)
+        {
+        (*counterCompare) +=1;
+        QuickSort(numbers, left, pivot - 1, counterCompare, counterExchange);
+        }
+    if (right > pivot)
+        {
+        (*counterCompare) +=1;
+        QuickSort(numbers, pivot + 1, right, counterCompare, counterExchange);
+
+        }
+}
+
+
+
